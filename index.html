@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hi — in many languages</title>
+  <meta name="description" content="An aesthetic, minimal website that says Hi in many languages." />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Optional: a clean sans for Latin; system fallbacks will cover other scripts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-0: #0c0f14;
+      --bg-1: #101421;
+      --bg-2: #111827;
+      --text: #e9eef8;
+      --muted: #aab3c5;
+
+      --card-bg: rgba(255,255,255,0.06);
+      --card-br: rgba(255,255,255,0.14);
+      --card-hover: rgba(255,255,255,0.10);
+
+      --accent-1: 255, 87, 87;   /* coral */
+      --accent-2: 99, 102, 241;  /* indigo */
+      --accent-3: 45, 212, 191;  /* teal */
+      --accent-4: 250, 204, 21;  /* amber */
+
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 10% -20%, rgba(var(--accent-2),0.12), transparent 60%),
+                  radial-gradient(900px 700px at 110% 30%, rgba(var(--accent-1),0.10), transparent 55%),
+                  radial-gradient(900px 900px at 40% 120%, rgba(var(--accent-3),0.10), transparent 60%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated glow orbs */
+    .orbs {
+      position: fixed;
+      inset: -20vmax;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(60px) saturate(120%);
+      opacity: 0.6;
+      animation: float 24s ease-in-out infinite alternate;
+      background:
+        radial-gradient( circle at 15% 30%, rgba(var(--accent-2),0.13), transparent 40%),
+        radial-gradient( circle at 70% 10%, rgba(var(--accent-4),0.12), transparent 42%),
+        radial-gradient( circle at 85% 65%, rgba(var(--accent-1),0.10), transparent 45%),
+        radial-gradient( circle at 25% 80%, rgba(var(--accent-3),0.12), transparent 45%);
+    }
+    @keyframes float {
+      0% { transform: translate3d(-2%, 1%, 0) scale(1.05); }
+      50% { transform: translate3d(2%, -1%, 0) scale(1.00); }
+      100% { transform: translate3d(-1%, 2%, 0) scale(1.08); }
+    }
+
+    .wrap{
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(18px, 3vw, 28px);
+    }
+
+    header.site {
+      padding: clamp(12px, 3vw, 24px) 0 calc(clamp(20px, 4vw, 36px));
+      display: grid;
+      gap: 10px;
+      align-items: end;
+      grid-template-columns: 1fr auto;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(3px);
+    }
+    header.site h1{
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height: 1.1;
+      background: linear-gradient(90deg,
+        rgba(var(--accent-3),0.95),
+        rgba(var(--accent-2),0.95),
+        rgba(var(--accent-1),0.95));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35));
+    }
+    header.site p{
+      grid-column: 1/-1;
+      margin: 0;
+      color: var(--muted);
+      font-weight: 400;
+      font-size: clamp(14px, 1.7vw, 16px);
+    }
+
+    .grid{
+      margin-top: clamp(18px, 3vw, 28px);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: clamp(10px, 2vw, 18px);
+    }
+
+    .card{
+      position: relative;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border: 1px solid var(--card-br);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 16px 14px 14px;
+      transition: transform 240ms ease, background 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+      backdrop-filter: blur(8px) saturate(120%);
+      isolation: isolate;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: conic-gradient(from 0deg at 50% 50%,
+        rgba(var(--accent-2),0.0),
+        rgba(var(--accent-2),0.14),
+        rgba(var(--accent-3),0.0),
+        rgba(var(--accent-1),0.14),
+        rgba(var(--accent-4),0.0));
+      mix-blend-mode: soft-light;
+      opacity: 0.0;
+      transition: opacity 240ms ease;
+      z-index: -1;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      border-color: rgba(255,255,255,0.22);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+    }
+    .card:hover::before { opacity: 0.7; }
+
+    .word{
+      font-size: clamp(22px, 3.2vw, 30px);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.2;
+      color: #fff;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lang{
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Direction handling for RTL greetings */
+    .word[dir="rtl"]{
+      direction: rtl;
+      unicode-bidi: plaintext;
+    }
+
+    footer.site {
+      margin: clamp(24px, 6vw, 44px) 0 clamp(8px, 3vw, 16px);
+      color: var(--muted);
+      font-size: 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px dashed rgba(255,255,255,0.12);
+      padding-top: 12px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+    .dot {
+      inline-size: 8px;
+      block-size: 8px;
+      border-radius: 999px;
+      background: rgb(var(--accent-3));
+      box-shadow: 0 0 0 3px rgba(var(--accent-3),0.18);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orbs { animation: none; }
+      .card, .card::before { transition: none; }
+      .card:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orbs" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header class="site" role="banner">
+      <h1>Say “Hi” — in many languages</h1>
+      <p>A little celebration of greetings around the world. Hover the cards and enjoy the glow.</p>
+    </header>
+
+    <main class="grid" aria-label="Greetings in many languages" role="main">
+      <!-- Europe -->
+      <div class="card" title="English">
+        <div class="word">Hi</div>
+        <div class="lang">English</div>
+      </div>
+      <div class="card" title="Español">
+        <div class="word">Hola</div>
+        <div class="lang">Español</div>
+      </div>
+      <div class="card" title="Français">
+        <div class="word">Salut</div>
+        <div class="lang">Français</div>
+      </div>
+      <div class="card" title="Deutsch">
+        <div class="word">Hallo</div>
+        <div class="lang">Deutsch</div>
+      </div>
+      <div class="card" title="Italiano">
+        <div class="word">Ciao</div>
+        <div class="lang">Italiano</div>
+      </div>
+      <div class="card" title="Português">
+        <div class="word">Olá</div>
+        <div class="lang">Português</div>
+      </div>
+      <div class="card" title="Nederlands">
+        <div class="word">Hoi</div>
+        <div class="lang">Nederlands</div>
+      </div>
+      <div class="card" title="Svenska">
+        <div class="word">Hej</div>
+        <div class="lang">Svenska</div>
+      </div>
+      <div class="card" title="Dansk">
+        <div class="word">Hej</div>
+        <div class="lang">Dansk</div>
+      </div>
+      <div class="card" title="Norsk">
+        <div class="word">Hei</div>
+        <div class="lang">Norsk</div>
+      </div>
+      <div class="card" title="Suomi">
+        <div class="word">Hei</div>
+        <div class="lang">Suomi</div>
+      </div>
+      <div class="card" title="Íslenska">
+        <div class="word">Hæ</div>
+        <div class="lang">Íslenska</div>
+      </div>
+      <div class="card" title="Русский">
+        <div class="word">Привет</div>
+        <div class="lang">Русский</div>
+      </div>
+      <div class="card" title="Українська">
+        <div class="word">Привіт</div>
+        <div class="lang">Українська</div>
+      </div>
+      <div class="card" title="Polski">
+        <div class="word">Cześć</div>
+        <div class="lang">Polski</div>
+      </div>
+      <div class="card" title="Čeština">
+        <div class="word">Ahoj</div>
+        <div class="lang">Čeština</div>
+      </div>
+      <div class="card" title="Slovenčina">
+        <div class="word">Ahoj</div>
+        <div class="lang">Slovenčina</div>
+      </div>
+      <div class="card" title="Slovenščina">
+        <div class="word">Živjo</div>
+        <div class="lang">Slovenščina</div>
+      </div>
+      <div class="card" title="Hrvatski">
+        <div class="word">Bok</div>
+        <div class="lang">Hrvatski</div>
+      </div>
+      <div class="card" title="Srpski">
+        <div class="word">Здраво</div>
+        <div class="lang">Српски</div>
+      </div>
+      <div class="card" title="Български">
+        <div class="word">Здравей</div>
+        <div class="lang">Български</div>
+      </div>
+      <div class="card" title="Ελληνικά">
+        <div class="word">Γεια σου</div>
+        <div class="lang">Ελληνικά</div>
+      </div>
+      <div class="card" title="Català">
+        <div class="word">Hola</div>
+        <div class="lang">Català</div>
+      </div>
+      <div class="card" title="Galego">
+        <div class="word">Ola</div>
+        <div class="lang">Galego</div>
+      </div>
+      <div class="card" title="Română">
+        <div class="word">Salut</div>
+        <div class="lang">Română</div>
+      </div>
+      <div class="card" title="Magyar">
+        <div class="word">Szia</div>
+        <div class="lang">Magyar</div>
+      </div>
+      <div class="card" title="Eesti">
+        <div class="word">Tere</div>
+        <div class="lang">Eesti</div>
+      </div>
+      <div class="card" title="Latviešu">
+        <div class="word">Sveiki</div>
+        <div class="lang">Latviešu</div>
+      </div>
+      <div class="card" title="Lietuvių">
+        <div class="word">Labas</div>
+        <div class="lang">Lietuvių</div>
+      </div>
+      <div class="card" title="Shqip">
+        <div class="word">Përshëndetje</div>
+        <div class="lang">Shqip</div>
+      </div>
+      <div class="card" title="Македонски">
+        <div class="word">Здраво</div>
+        <div class="lang">Македонски</div>
+      </div>
+      <div class="card" title="Հայերեն">
+        <div class="word">Բարև</div>
+        <div class="lang">Հայերեն</div>
+      </div>
+      <div class="card" title="ქართული">
+        <div class="word">გამარჯობა</div>
+        <div class="lang">ქართული</div>
+      </div>
+      <div class="card" title="Euskara">
+        <div class="word">Kaixo</div>
+        <div class="lang">Euskara</div>
+      </div>
+      <div class="card" title="Cymraeg">
+        <div class="word">Helo</div>
+        <div class="lang">Cymraeg</div>
+      </div>
+      <div class="card" title="Gaeilge">
+        <div class="word">Dia dhuit</div>
+        <div class="lang">Gaeilge</div>
+      </div>
+      <div class="card" title="Gàidhlig">
+        <div class="word">Halò</div>
+        <div class="lang">Gàidhlig</div>
+      </div>
+      <div class="card" title="Беларуская">
+        <div class="word">Прывітанне</div>
+        <div class="lang">Беларуская</div>
+      </div>
+      <div class="card" title="Latina">
+        <div class="word">Salve</div>
+        <div class="lang">Latina</div>
+      </div>
+      <div class="card" title="Esperanto">
+        <div class="word">Saluton</div>
+        <div class="lang">Esperanto</div>
+      </div>
+
+      <!-- Middle East / North Africa -->
+      <div class="card" title="العربية">
+        <div class="word" lang="ar" dir="rtl">مرحبا</div>
+        <div class="lang">العربية</div>
+      </div>
+      <div class="card" title="עברית">
+        <div class="word" lang="he" dir="rtl">שלום</div>
+        <div class="lang">עברית</div>
+      </div>
+      <div class="card" title="فارسی">
+        <div class="word" lang="fa" dir="rtl">سلام</div>
+        <div class="lang">فارسی</div>
+      </div>
+      <div class="card" title="Türkçe">
+        <div class="word">Merhaba</div>
+        <div class="lang">Türkçe</div>
+      </div>
+      <div class="card" title="Kurdî">
+        <div class="word">Slaw</div>
+        <div class="lang">Kurdî</div>
+      </div>
+
+      <!-- South Asia -->
+      <div class="card" title="हिन्दी">
+        <div class="word" lang="hi">नमस्ते</div>
+        <div class="lang">हिन्दी</div>
+      </div>
+      <div class="card" title="বাংলা">
+        <div class="word" lang="bn">নমস্কার</div>
+        <div class="lang">বাংলা</div>
+      </div>
+      <div class="card" title="اردو">
+        <div class="word" lang="ur" dir="rtl">ہیلو</div>
+        <div class="lang">اردو</div>
+      </div>
+      <div class="card" title="ਪੰਜਾਬੀ">
+        <div class="word" lang="pa">ਸਤ ਸ੍ਰੀ ਅਕਾਲ</div>
+        <div class="lang">ਪੰਜਾਬੀ</div>
+      </div>
+      <div class="card" title="ગુજરાતી">
+        <div class="word" lang="gu">નમસ્તે</div>
+        <div class="lang">ગુજરાતી</div>
+      </div>
+      <div class="card" title="मराठी">
+        <div class="word" lang="mr">नमस्कार</div>
+        <div class="lang">मराठी</div>
+      </div>
+      <div class="card" title="தமிழ்">
+        <div class="word" lang="ta">வணக்கம்</div>
+        <div class="lang">தமிழ்</div>
+      </div>
+      <div class="card" title="తెలుగు">
+        <div class="word" lang="te">హాయ్</div>
+        <div class="lang">తెలుగు</div>
+      </div>
+      <div class="card" title="ಕನ್ನಡ">
+        <div class="word" lang="kn">ನಮಸ್ಕಾರ</div>
+        <div class="lang">ಕನ್ನಡ</div>
+      </div>
+      <div class="card" title="മലയാളം">
+        <div class="word" lang="ml">നമസ്കാരം</div>
+        <div class="lang">മലയാളം</div>
+      </div>
+      <div class="card" title="සිංහල">
+        <div class="word" lang="si">ආයුබෝවන්</div>
+        <div class="lang">සිංහල</div>
+      </div>
+      <div class="card" title="नेपाली">
+        <div class="word" lang="ne">नमस्ते</div>
+        <div class="lang">नेपाली</div>
+      </div>
+      <div class="card" title="Монгол">
+        <div class="word" lang="mn">Сайн уу</div>
+        <div class="lang">Монгол</div>
+      </div>
+      <div class="card" title="བོད་ཡིག">
+        <div class="word" lang="bo">བཀྲ་ཤིས་བདེ་ལགས</div>
+        <div class="lang">བོད་ཡིག</div>
+      </div>
+
+      <!-- East / Southeast Asia -->
+      <div class="card" title="中文">
+        <div class="word" lang="zh">你好</div>
+        <div class="lang">中文</div>
+      </div>
+      <div class="card" title="日本語">
+        <div class="word" lang="ja">こんにちは</div>
+        <div class="lang">日本語</div>
+      </div>
+      <div class="card" title="한국어">
+        <div class="word" lang="ko">안녕</div>
+        <div class="lang">한국어</div>
+      </div>
+      <div class="card" title="Tiếng Việt">
+        <div class="word" lang="vi">Xin chào</div>
+        <div class="lang">Tiếng Việt</div>
+      </div>
+      <div class="card" title="ไทย">
+        <div class="word" lang="th">สวัสดี</div>
+        <div class="lang">ไทย</div>
+      </div>
+      <div class="card" title="ລາວ">
+        <div class="word" lang="lo">ສະບາຍດີ</div>
+        <div class="lang">ລາວ</div>
+      </div>
+      <div class="card" title="ខ្មែរ">
+        <div class="word" lang="km">ជំរាបសួរ</div>
+        <div class="lang">ខ្មែរ</div>
+      </div>
+      <div class="card" title="Bahasa Indonesia">
+        <div class="word">Halo</div>
+        <div class="lang">Bahasa Indonesia</div>
+      </div>
+      <div class="card" title="Bahasa Melayu">
+        <div class="word">Hai</div>
+        <div class="lang">Bahasa Melayu</div>
+      </div }
+      <div class="card" title="Tagalog">
+        <div class="word">Kamusta</div>
+        <div class="lang">Tagalog</div>
+      </div>
+      <div class="card" title="မြန်မာ">
+        <div class="word" lang="my">မင်္ဂလာပါ</div>
+        <div class="lang">မြန်မာ</div>
+      </div>
+
+      <!-- Africa -->
+      <div class="card" title="Kiswahili">
+        <div class="word">Hujambo</div>
+        <div class="lang">Kiswahili</div>
+      </div>
+      <div class="card" title="Hausa">
+        <div class="word">Sannu</div>
+        <div class="lang">Hausa</div>
+      </div>
+      <div class="card" title="Igbo">
+        <div class="word">Ndewo</div>
+        <div class="lang">Igbo</div>
+      </div>
+      <div class="card" title="isiZulu">
+        <div class="word">Sawubona</div>
+        <div class="lang">isiZulu</div>
+      </div>
+      <div class="card" title="isiXhosa">
+        <div class="word">Molo</div>
+        <div class="lang">isiXhosa</div>
+      </div>
+      <div class="card" title="አማርኛ">
+        <div class="word" lang="am">ሰላም</div>
+        <div class="lang">አማርኛ</div>
+      </div>
+      <div class="card" title="Afrikaans">
+        <div class="word">Hallo</div>
+        <div class="lang">Afrikaans</div>
+      </div>
+
+      <!-- Oceania / Pacific -->
+      <div class="card" title="Māori">
+        <div class="word">Kia ora</div>
+        <div class="lang">Māori</div>
+      </div>
+      <div class="card" title="Samoan">
+        <div class="word">Talofa</div>
+        <div class="lang">Gagana Sāmoa</div>
+      </div>
+      <div class="card" title="Tongan">
+        <div class="word">Mālō e lelei</div>
+        <div class="lang">lea fakatonga</div>
+      </div>
+      <div class="card" title="Fijian">
+        <div class="word">Bula</div>
+        <div class="lang">Vosa Vakaviti</div>
+      </div>
+      <div class="card" title="ʻŌlelo Hawaiʻi">
+        <div class="word">Aloha</div>
+        <div class="lang">ʻŌlelo Hawaiʻi</div>
+      </div>
+
+      <!-- The Americas -->
+      <div class="card" title="Navajo">
+        <div class="word">Yáʼátʼééh</div>
+        <div class="lang">Diné Bizaad (Navajo)</div>
+      </div>
+      <div class="card" title="Cherokee">
+        <div class="word">ᎣᏏᏲ</div>
+        <div class="lang">Cherokee (Tsalagi)</div>
+      </div>
+      <div class="card" title="Português (Brasil)">
+        <div class="word">Oi</div>
+        <div class="lang">Português (Brasil)</div>
+      </div>
+      <div class="card" title="Quechua (bonus)">
+        <div class="word">Rimaykullayki</div>
+        <div class="lang">Runasimi (Quechua)</div>
+      </div>
+    </main>
+
+    <footer class="site" role="contentinfo">
+      <span class="chip" aria-label="Fun fact">
+        <span class="dot" aria-hidden="true"></span>
+        60+ ways to say “Hi”
+      </span>
+      <span>Made with ❤️ and CSS</span>
+    </footer>
+  </div>
+</body>
+</html>
